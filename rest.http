@@ -1,0 +1,19 @@
+GET http://localhost:3000/products
+
+###
+POST http://localhost:3000/products
+
+###
+GET http://localhost:3000/products/id
+
+###
+PATCH  http://localhost:3000/products/id
+
+###
+DELETE http://localhost:3000/products/id
+
+### wrong url
+GET http://localhost:3000/abc-xyq
+
+
+

@@ -1,0 +1,22 @@
+{
+  "name": "restapi_youtube",
+  "version": "1.0.0",
+  "description": "youtube mafia codes",
+  "main": "app.js",
+  "scripts": {
+    "start": "nodemon app.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/derllock/simple_Rest_Api.git"
+  },
+  "author": "Me",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/derllock/simple_Rest_Api/issues"
+  },
+  "homepage": "https://github.com/derllock/simple_Rest_Api#readme",
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
