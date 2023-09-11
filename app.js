@@ -1,6 +1,21 @@
 const express=require('express');
 const app=express();                  
 
+const mongoose=require('mongoose');
+mongoose.connect(
+    'mongodb+srv://cluster0.sw6gpyp.mongodb.net/?retryWrites=true&w=majority/RestApi_Youtube',
+    {
+        dbname:'RestApi_Youtube',
+        user:'derllock',
+        pass:'derllock',
+        useNewUrlParser:true,
+        useUnifiedTopology:true
+    })
+
+.then(()=>{
+    console.log('mongodb connected yeah...')
+});
+
 const productRoute=require('./Routes/Product.route');
 app.use('/products',productRoute);
 
