@@ -1,9 +1,10 @@
 const express=require('express');
 const app=express();                  
-
+app.use(express.json());
 const mongoose=require('mongoose');
+const createHttpError=require('http-errors');
 mongoose.connect(
-    'mongodb+srv://cluster0.sw6gpyp.mongodb.net/?retryWrites=true&w=majority/RestApi_Youtube',
+    'mongodb+srv://cluster0.sw6gpyp.mongodb.net/',
     {
         dbname:'RestApi_Youtube',
         user:'derllock',
@@ -12,17 +13,26 @@ mongoose.connect(
         useUnifiedTopology:true
     })
 
-.then(()=>{
+.then(()=>{                                                       //promise
     console.log('mongodb connected yeah...')
 });
 
-const productRoute=require('./Routes/Product.route');
+const productRoute=require('./Routes/Product.route');            // /products/*
 app.use('/products',productRoute);
 
-app.use((req,res,next)=>{
-    const err=new Error("Not Found");
-    err.status=404
-    next(err)
+app.all('/test',(req,res)=>{
+    //console.log(req.query);
+   // res.send(req.query.name);
+    // console.log(req.params.id);
+    // res.send(req.params);
+    console.log(req.body);
+    res.send(req.body);
+});
+
+app.use((req,res,next)=>{                                         //wrong url
+    // const err=new Error("Not Found");
+    // err.status=404
+    next(createHttpError(404,"not found"))
 });
 app.listen(3000,()=>{
     console.log("Server 3000 begins");

@@ -2,18 +2,42 @@ GET http://localhost:3000/products
 
 ###
 POST http://localhost:3000/products
+Content-Type: application/json
+    
+    {
+        "name":"iTV",
+        "price":945299
+    }
 
-###
-GET http://localhost:3000/products/id
+### Find Single product
+GET http://localhost:3000/products/650065ca7543c203d8845ecf 
 
-###
-PATCH  http://localhost:3000/products/id
+### Update Product
+PATCH  http://localhost:3000/products/65005bf97b7a9da70d2378fc
+Content-Type: application/json
+    
+    {
+        "name":"apple smart watch",
+        "price":43544
+    }
 
-###
-DELETE http://localhost:3000/products/id
+###delete single product
+DELETE http://localhost:3000/products/650065ca7543c203d8845ecf
 
 ### wrong url
 GET http://localhost:3000/abc-xyq
 
+### test
+//GET http://localhost:3000/test/?name=imac&price=4600      //query format
+//Get http://localhost:3000/test/4600/imac                  //params format
+
+### 
+POST http://localhost:3000/test
+Content-Type: application/json
+
+{
+    "id":14001,
+    "name":"imacpro"
+}
 
 
