@@ -37,7 +37,7 @@ GET http://localhost:3646/abc-xyq
 POST http://localhost:3646/test
 
 ###
-GET http://localhost:3646/products/find
+GET http://localhost:3646/products/find?page=1&order=desc&column=name&keyword=p
 
 
 
