@@ -1,20 +1,22 @@
-GET http://localhost:3000/products
+
+### get all products
+GET http://localhost:3646/products
 
 ### create product
-POST http://localhost:3000/products
+POST http://localhost:3646/products
 Content-Type: application/json
     
     {
-        "name":"iMan",
-        "price":19200
+        "name":"iPlane",
+        "price":938200
         
     }
 
 ### Find Single product
-GET http://localhost:3000/products/6503f7487cd09afd13e22d99
+GET http://localhost:3646/products/65054dc1ad1d30c24ffd1765
 
 ### Update Product
-PATCH  http://localhost:3000/products/6503f7487cd09afd13e22d99
+PATCH  http://localhost:3646/products/6503f7487cd09afd13e22d99
 Content-Type: application/json
     
     {
@@ -22,22 +24,20 @@ Content-Type: application/json
     }
 
 ###delete single product
-DELETE http://localhost:3000/products/65005bf97b7a9da70d2378fc
+DELETE http://localhost:3646/products/65005bf97b7a9da70d2378fc
 
 ### wrong url
-GET http://localhost:3000/abc-xyq
+GET http://localhost:3646/abc-xyq
 
 ### test
-//GET http://localhost:3000/test/?name=imac&price=4600      //query format
-//Get http://localhost:3000/test/4600/imac                  //params format
+//GET http://localhost:3646/test/?name=imac&price=4600      //query format
+//Get http://localhost:3646/test/4600/imac                  //params format
 
 ### 
-POST http://localhost:3000/test
-Content-Type: application/json
+POST http://localhost:3646/test
 
-{
-    "id":14001,
-    "name":"imacpro"
-}
+###
+GET http://localhost:3646/products/find
+
 
 

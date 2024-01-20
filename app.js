@@ -17,6 +17,7 @@ app.all('/test',(req,res)=>{
     res.send(req.params);
     console.log(req.body);
     res.send(req.body);*/
+    console.log("test");
 });
 
 app.use((req,res,next)=>{                                         //wrong url
