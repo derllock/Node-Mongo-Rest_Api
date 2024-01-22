@@ -39,5 +39,15 @@ POST http://localhost:3646/test
 ###
 GET http://localhost:3646/products/find?page=1&order=desc&column=name&keyword=p
 
+###
+PATCH  http://localhost:3646/products/IPad
+Content-Type: application/json
+    
+   {
+        "price":4000
+    }
+
+###
+GET http://localhost:3646/products/showData
 
 

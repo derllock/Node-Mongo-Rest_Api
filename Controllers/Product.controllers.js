@@ -19,7 +19,7 @@ module.exports = {
                     status: 'success',
                     data: results,
                     message: 'All products fetched successfully'
-                  });
+                });
             } catch (error) {
                 console.log(error.message);
                 next(error);
@@ -28,13 +28,14 @@ module.exports = {
     addNewProduct:
         async (req, res, next) => {        // using async post
             try {
-                const product = new Products(req.body);
-                const result = await product.save();
+
+                let obj = { ...req.body };
+                const result = await Products.create(obj);   //another way to save
                 res.status(200).json({
                     status: 'success',
                     data: result,
                     message: 'Product added successfully'
-                  });
+                });
             } catch (error) {
                 if (error.name = 'ValidationError') {    //if one of the 2 required values is missing in post{} 
                     next(createHttpError(422, error.message));
@@ -52,7 +53,7 @@ module.exports = {
                     status: 'success',
                     data: product,
                     message: 'Product fetched successfully'
-                  })    ;
+                });
             } catch (error) {
                 if (error instanceof mongoose.CastError) {
                     next(createHttpError(400, "Invalid Product ID"));
@@ -70,13 +71,12 @@ module.exports = {
                     status: 'success',
                     data: product,
                     message: 'Product updated successfully'
-                  });
+                });
             } catch (error) {
-                if (error instanceof mongoose.CastError) {                  // error when id is provided but it not recognised by mongo as 'id' field, different than does not exist.
-                    next(createHttpError(400, "Invalid Product ID"));
-                    return;
-                }
-                next(error);
+                res.status(400).json({
+                    status: 'fail',
+                    message: error.message
+                });
             }
         },
     deleteProduct: async (req, res, next) => {
@@ -87,7 +87,7 @@ module.exports = {
                 status: 'success',
                 data: product,
                 message: 'Product deleted successfully'
-              });
+            });
         } catch (error) {
             if (error instanceof mongoose.CastError) {                  // error when id is provided but it not recognised by mongo as 'id' field, different than does not exist.
                 next(createHttpError(400, "Invalid Product ID"));
@@ -105,14 +105,15 @@ module.exports = {
                 if (order && column) {
                     sort[column] = order === "desc" ? -1 : 1;
                 }
-                else if(order && !column){
+                else if (order && !column) {
                     sort["name"] = order === "desc" ? -1 : 1;
                 }
-                else if(!order && column){
+                else if (!order && column) {
                     sort[column] = 1;
                 }
-                else{
+                else {
                     sort["name"] = 1;
+                    sort["price"] = 1;
                 }
                 var query = {};
                 if (keyword) {
@@ -127,7 +128,7 @@ module.exports = {
                     totalPages: Math.ceil(total / limit),//convert to int
                     currentPage: currPage,
                     message: 'All products fetched successfully'
-                  });
+                });
 
             } catch (error) {
                 if (error instanceof mongoose.CastError) {
@@ -137,5 +138,69 @@ module.exports = {
                 next(error);
             }
         },
+    modifyProduct:
+        async (req, res, next) => {
+            try {
+                const filter = { name: req.params.name};
+                const update1 = {
+                    $set: { price: req.body.price }
+                };
+                const update2 = {
+                    name: req.body.name,          //cahange body to{price:"484848",name:"IPad"} and replace .updateOne with .replaceOne
+                    price: req.body.price
+                };
+                const update3 = {
+                    $mul: { price: req.body.price } //change body to {price:2} it will multiply the price by 2, use 
+                };
 
+                const result = await Products.updateOne(filter, update3);
+                if (result.modifiedCount === 0) throw createHttpError(404, "Product does not exist");
+                res.status(200).json({
+                    status: 'success',
+                    data: result,
+                    message: 'Product modified successfully'
+                });
+
+            } catch (error) {
+                res.status(400).json({
+                    status: 'failure',
+                    message: error.message
+                });
+            }
+        },
+        showData:async(req,res,next)=>{
+            try{
+                pipeline1=[
+                    {
+                        $match:{price:{$gte:24000}}
+                    },
+                    {
+                        $group:{
+                            _id:"$price",
+                            count:{$sum:1}, //counts all documents with same price
+                            names: { $push: "$name" } //pushes all names in an array
+                        },
+                        
+                    },
+                    {
+                        $sort:{name:1}
+                    }
+                ];
+                const aggCursor=await Products.aggregate(pipeline1);
+                const count=await Products.countDocuments({price:{$gte:24000}});//counting  all documents
+                res.status(200).json({
+                    status: 'success',
+                    data: aggCursor,
+                    count:count,
+                    message: 'Aggregation done successfully'
+                });
+
+            }catch(error){
+                res.status(400).json({
+                    status: 'failure',
+                    message: error.message
+                });
+            }
+        }
 };
+    
