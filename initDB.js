@@ -25,11 +25,12 @@ module.exports=()=> {
         console.log('Alas! Mongoose disconnected, See you next time');                              //this is executed first on SIGINT
     })
     process.on('SIGINT',()=>{
-        mongoose.connection.close().then(()=>{                             // used .then() because callbacks not supported in latest version and it only works when the terminal is killed and new console/terminal is opened, confusing and I'm unable to understand on net
-            console.log('Ctrl-C pressed, Mongoose is disconnected due to app termination');
+        console.log('SIGINT received, shutting down');
+        mongoose.connection.close(()=>{
+            console.log('Mongoose connection terminated');
             process.exit(0);
-        });
-    });
+        })
+    })
 
 
 };

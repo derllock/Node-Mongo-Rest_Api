@@ -153,7 +153,7 @@ module.exports = {
                     $mul: { price: req.body.price } //change body to {price:2} it will multiply the price by 2, use 
                 };
 
-                const result = await Products.updateOne(filter, update3);
+                const result = await Products.updateOne(filter, update3);//change update1 to update2 or update3
                 if (result.modifiedCount === 0) throw createHttpError(404, "Product does not exist");
                 res.status(200).json({
                     status: 'success',

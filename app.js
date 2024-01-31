@@ -3,7 +3,7 @@ const app=express();
 app.use(express.json());                                       //posting json data
 require('dotenv').config();
 const createHttpError=require('http-errors');
-require('./initDB')();
+
 const PORT=process.env.PORT || 3000;
 
 
@@ -26,17 +26,17 @@ app.use((req,res,next)=>{                                         //wrong url
     next(createHttpError(404,"not found"))
 });
 
-app.listen(PORT,()=>{
-    console.log("Server started on Port "+ PORT+'...');
+const server = app.listen(PORT, () => {
+    console.log("Server started on Port " + PORT + '...');
 });
-
+require('./initDB')();
 //error handler wherever u use next(...) this funt, will be called
-app.use((err,req,res,next)=>{
+app.use((err, req, res, next) => {
     res.status(err.status || 500)
     res.send({
-        error:{
-            status:err.status || 500,
-            message:err.message
+        error: {
+            status: err.status || 500,
+            message: err.message
         }
     })
 });
